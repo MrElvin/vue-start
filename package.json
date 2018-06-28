@@ -1,5 +1,5 @@
 {
-  "name": "vue-start",
+  "name": "vue-start-node",
   "version": "1.0.0",
   "description": "A webpack vue demo",
   "main": "index.js",
