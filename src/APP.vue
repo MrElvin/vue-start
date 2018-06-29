@@ -6,8 +6,6 @@
 </template>
 
 <script>
-import './hot'
-
 export default {
   name: 'App',
   data () {

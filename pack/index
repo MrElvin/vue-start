@@ -1,0 +1,54 @@
+#! /usr/bin/env node
+const pack = require('commander')
+const path = require('path')
+const pkg = require('../package.json')
+const handlerBuild = require('./handlerBuild')
+const handlerDev = require('./handlerDev')
+
+// 配置项目的文件 build 目录 和 源代码编写目录
+const projectDir = {
+  dist: path.join(__dirname, '..', 'dist'),
+  src: path.join(__dirname, '..', 'src'),
+  root: path.join(__dirname, '..')
+}
+
+pack
+  .version(pkg.version, '-v, --version')
+  // .option('-p, --port <port>', 'specify listening port', 8080)
+  // .option('-f --file <file>', 'specify main entrance', 'main.js')
+  // .option('-e, --env <mode>', 'specify build mode (\'development\'|\'production\')', 'production')
+
+pack
+  .command('hot [file] [port] [domain]')
+  .description('start webpack-dev-serve in hot-reload mode')
+  .action((file = '', port = 8080, domain = 'localhost') => handlerDev.hot({ file, ...projectDir, env: 'development', port, type: 'hot', domain }))
+
+pack
+  .command('live [file] [port] [domain]')
+  .description('start webpack-dev-serve in live-reload mode')
+  .action((file = '', port = 8080, domain = 'localhost') => handlerDev.live({ file, ...projectDir, env: 'development', port, type: 'live', domain }))
+
+pack
+  .command('build [file]')
+  .description('execute webpack build (default entry: all .js files in src/)')
+  .action((file = '') => handlerBuild.build({ file, ...projectDir, env: 'production' }))
+  .on('--help', () => {
+    console.log(`
+  Examples:
+
+    build index.js production
+    `)
+  })
+
+pack
+  .command('watch [file]')
+  .description('execute webpack build and watch files')
+  .action((file = '') => handlerBuild.watch({ file, ...projectDir, env: 'production' }))
+  .on('--help', () => {
+    console.log(`
+  Examples:
+
+    watch index.js production
+    `)
+  })
+pack.parse(process.argv)

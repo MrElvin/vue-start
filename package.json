@@ -8,7 +8,10 @@
     "build": "webpack --config ./build/webpack.prod.conf.js",
     "dev": "webpack-dev-server --inline --progress --color --config ./build/webpack.dev.conf.js"
   },
-  "keywords": ["webpack", "vue"],
+  "keywords": [
+    "webpack",
+    "vue"
+  ],
   "author": "BreezyMelon <935448078@qq.com>",
   "license": "ISC",
   "devDependencies": {
@@ -19,7 +22,9 @@
     "babel-plugin-transform-runtime": "^6.23.0",
     "babel-preset-env": "^1.7.0",
     "babel-preset-stage-2": "^6.24.1",
+    "chalk": "^2.4.1",
     "clean-webpack-plugin": "^0.1.19",
+    "commander": "^2.15.1",
     "copy-webpack-plugin": "^4.5.2",
     "css-loader": "^0.28.11",
     "eslint": "^5.0.1",
@@ -35,9 +40,11 @@
     "less": "^3.0.4",
     "less-loader": "^4.1.0",
     "mini-css-extract-plugin": "^0.4.0",
+    "ora": "^2.1.0",
     "postcss-loader": "^2.1.5",
     "pug": "^2.0.3",
     "pug-plain-loader": "^1.0.0",
+    "signale": "^1.2.1",
     "style-loader": "^0.21.0",
     "stylus": "^0.54.5",
     "stylus-loader": "^3.0.2",

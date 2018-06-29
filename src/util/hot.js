@@ -1,7 +1,5 @@
-if (process.env.NODE_ENV === 'development') {
-  if (module.hot) {
-    module.hot.accept()
-  }
+if (process.env.NODE_ENV === 'development' && process.env.WEBPACK_HOTRELOAD === 'hot') {
+  if (module.hot) module.hot.accept()
 
   const HMRCallback = status => {
     if (status === 'check') console.log('%c%s', 'color: deepskyblue', '**** 热更新开始 ****')
