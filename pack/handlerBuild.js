@@ -19,7 +19,6 @@ const spinner = ora('webpack 构建中...')
 const generateConfig = ({ dist, src, file, env, root }) => {
   const filePath = path.join(src, file)
   let webpackEntryList = []
-  console.log('filepath', filePath)
   if (!fs.existsSync(filePath)) return log.error(`文件指定错误，${filePath} 文件不存在`)
   const stat = fs.statSync(filePath)
 
@@ -102,7 +101,8 @@ const generateConfig = ({ dist, src, file, env, root }) => {
     ]
   }
 
-  log.info('配置入口', webpackEntryList)
+  log.info('命令行参数路径：', filePath)
+  log.info('配置入口：', webpackEntryList)
   log.info('项目根目录：', root)
   log.info('环境模式：', env)
   log.info('publicPath：', config.output.publicPath)

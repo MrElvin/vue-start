@@ -5,7 +5,8 @@ const pkg = require('../package.json')
 const handlerBuild = require('./handlerBuild')
 const handlerDev = require('./handlerDev')
 
-// 配置项目的文件 build 目录 和 源代码编写目录
+// 配置项目的文件 build 目录和源代码编写目录
+// 默认的静态文件目录名为 static，如果需要更改该文件夹名称，需要改变 webpack 配置（copyWebpackPlugin）
 const projectDir = {
   dist: path.join(__dirname, '..', 'dist'),
   src: path.join(__dirname, '..', 'src'),
@@ -14,24 +15,31 @@ const projectDir = {
 
 pack
   .version(pkg.version, '-v, --version')
-  // .option('-p, --port <port>', 'specify listening port', 8080)
-  // .option('-f --file <file>', 'specify main entrance', 'main.js')
-  // .option('-e, --env <mode>', 'specify build mode (\'development\'|\'production\')', 'production')
 
+// 热加载命令，默认入口：src 下的 main.js 文件
 pack
-  .command('hot [file] [port] [domain]')
+  .command('hot')
   .description('start webpack-dev-serve in hot-reload mode')
-  .action((file = '', port = 8080, domain = 'localhost') => handlerDev.hot({ file, ...projectDir, env: 'development', port, type: 'hot', domain }))
+  .option('-p, --port [port]', 'specify listening port')
+  .option('-f, --file [file]', 'specify entry file or directory')
+  .option('-d, --domain [domain]', 'specify domin')
+  .action((cmd) => handlerDev.hot({ file: cmd.file ? cmd.file : 'main.js', ...projectDir, env: 'development', port: cmd.port ? cmd.port : 8080, type: 'hot', domain: cmd.domain ? cmd.domain : 'localhost' }))
 
+// live-reload 加载命令，默认入口：src 下的 main.js 文件
 pack
-  .command('live [file] [port] [domain]')
+  .command('live')
   .description('start webpack-dev-serve in live-reload mode')
-  .action((file = '', port = 8080, domain = 'localhost') => handlerDev.live({ file, ...projectDir, env: 'development', port, type: 'live', domain }))
+  .option('-p, --port [port]', 'specify listening port')
+  .option('-f, --file [file]', 'specify entry file or directory')
+  .option('-d, --domain [domain]', 'specify domin')
+  .action((cmd) => handlerDev.live({ file: cmd.file ? cmd.file : 'main.js', ...projectDir, env: 'development', port: cmd.port ? cmd.port : 8080, type: 'live', domain: cmd.domain ? cmd.domain : 'localhost' }))
 
+// 打包命令，默认入口：src 下的 main.js 文件（只提供了生产打包）
 pack
-  .command('build [file]')
+  .command('build')
   .description('execute webpack build (default entry: all .js files in src/)')
-  .action((file = '') => handlerBuild.build({ file, ...projectDir, env: 'production' }))
+  .option('-f, --file [file]', 'specify entry file or directory')
+  .action((cmd) => handlerBuild.build({ file: cmd.file ? cmd.file : 'main.js', ...projectDir, env: 'production' }))
   .on('--help', () => {
     console.log(`
   Examples:
@@ -40,10 +48,12 @@ pack
     `)
   })
 
+// 监听打包命令，默认入口：src 下的 main.js 文件（只提供了生产打包）
 pack
-  .command('watch [file]')
+  .command('watch')
   .description('execute webpack build and watch files')
-  .action((file = '') => handlerBuild.watch({ file, ...projectDir, env: 'production' }))
+  .option('-f, --file [file]', 'specify entry file or directory')
+  .action((cmd) => handlerBuild.watch({ file: cmd.file ? cmd.file : 'main.js', ...projectDir, env: 'production' }))
   .on('--help', () => {
     console.log(`
   Examples:

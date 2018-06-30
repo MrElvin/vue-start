@@ -25,7 +25,7 @@ const generateConfig = ({ dist, src, file, env, root, port, type, domain }) => {
   if (webpackEntryList.length === 0) return log.error(`指定文件目录为空或不包含 .js 文件`)
   const webpackEntryConfig = webpackEntryList
     .reduce((total, cur) => {
-      const value = [`${path.resolve(filePath, cur)}`]
+      const value = webpackEntryList.length === 1 ? [`${path.resolve(filePath)}`] : [`${path.resolve(filePath, cur)}`]
       if (type === 'hot') {
         value.unshift(`webpack/hot/dev-server`)
         value.unshift(`webpack-dev-server/client?http://${domain}:${port}/`)
